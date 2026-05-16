@@ -8,6 +8,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN as string;
 export function Dashboard() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const markersRef = useRef<mapboxgl.Marker[]>([]);
 
   const { data: businesses } = useQuery({
     queryKey: ["businesses"],
@@ -22,16 +23,21 @@ export function Dashboard() {
       center: [151.1836, -33.7969], // Chatswood
       zoom: 15,
     });
+    return () => {
+      map.current?.remove();
+      map.current = null;
+    };
   }, []);
 
   useEffect(() => {
     if (!map.current || !businesses) return;
-    businesses.forEach((business) => {
+    markersRef.current.forEach((m) => m.remove());
+    markersRef.current = businesses.map((business) =>
       new mapboxgl.Marker()
         .setLngLat(business.location.coordinates as [number, number])
         .setPopup(new mapboxgl.Popup().setText(business.name))
-        .addTo(map.current!);
-    });
+        .addTo(map.current!),
+    );
   }, [businesses]);
 
   return (

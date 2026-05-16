@@ -1,4 +1,4 @@
-import type { Business, Alert, CreateAlert, Issue, CreateIssue } from "@bizconnect/shared";
+import type { Business, UpdateBusiness, CreateAlert, Issue, CreateIssue } from "@bizconnect/shared";
 
 const BASE = import.meta.env.VITE_API_BASE_URL as string;
 
@@ -15,7 +15,7 @@ export const api = {
   businesses: {
     list: () => request<Business[]>("/businesses"),
     get: (id: string) => request<Business>(`/businesses/${id}`),
-    update: (id: string, body: Partial<Business>) =>
+    update: (id: string, body: UpdateBusiness) =>
       request<{ success: boolean }>(`/businesses/${id}`, { method: "PUT", body: JSON.stringify(body) }),
   },
   alerts: {
