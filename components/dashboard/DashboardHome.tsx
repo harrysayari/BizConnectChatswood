@@ -19,7 +19,9 @@ export function DashboardHome() {
         {/* Desktop: map + alerts side by side below overview */}
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-8">
           <div className="flex-1 lg:min-w-0">
-            <MapMockup />
+            <MapMockup
+              googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+            />
           </div>
           <div className="flex-1 lg:max-w-xl xl:max-w-none">
             <LiveTrafficPanel

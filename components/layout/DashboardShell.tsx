@@ -194,7 +194,8 @@ function MobileBottomNav() {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (visible?.target.id) {
           const found = ids.find(([, sid]) => sid === visible.target.id);
-          if (found) setActive(found[0]);
+          if (found)
+            setActive((prev) => (prev === found[0] ? prev : found[0]));
         }
       },
       { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
