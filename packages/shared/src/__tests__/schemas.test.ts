@@ -14,7 +14,9 @@ const validBusiness = {
 
 describe("BusinessSchema", () => {
   it("parses a valid business", () => {
-    expect(() => BusinessSchema.parse(validBusiness)).not.toThrow();
+    const result = BusinessSchema.parse(validBusiness);
+    expect(result.id).toBe(validBusiness.id);
+    expect(result.services).toEqual(["coffee", "pastries"]);
   });
   it("rejects a business missing required fields", () => {
     expect(() => BusinessSchema.parse({ id: validBusiness.id })).toThrow();

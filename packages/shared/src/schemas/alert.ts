@@ -2,7 +2,9 @@ import { z } from "zod";
 
 export const GeoPolygonSchema = z.object({
   type: z.literal("Polygon"),
-  coordinates: z.array(z.array(z.tuple([z.number(), z.number()]))),
+  coordinates: z.tuple([
+    z.array(z.tuple([z.number(), z.number()])).min(4),
+  ]).rest(z.array(z.tuple([z.number(), z.number()])).min(4)),
 });
 
 export const AlertSchema = z.object({
@@ -11,7 +13,7 @@ export const AlertSchema = z.object({
   body: z.string().min(1),
   polygon: GeoPolygonSchema,
   sent_at: z.string().datetime().nullable(),
-  created_by: z.string().uuid().nullable(),
+  created_by: z.string().uuid().optional().nullable(),
 });
 
 export type Alert = z.infer<typeof AlertSchema>;

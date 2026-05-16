@@ -8,7 +8,7 @@ export const GeoPointSchema = z.object({
 export const BusinessSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1),
-  phone: z.string().min(1),
+  phone: z.string().regex(/^\+\d{7,15}$/, "Phone must be E.164 format (e.g. +61400000000)"),
   address: z.string().min(1),
   location: GeoPointSchema,
   trading_hours: z.record(z.string()).optional(),
