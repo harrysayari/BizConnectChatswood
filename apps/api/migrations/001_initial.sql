@@ -1,4 +1,4 @@
--- Requires: CREATE EXTENSION IF NOT EXISTS postgis;
+CREATE EXTENSION IF NOT EXISTS postgis;
 
 CREATE TABLE businesses (
   id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -21,7 +21,7 @@ CREATE TABLE alerts (
   body        TEXT NOT NULL,
   polygon     GEOGRAPHY(POLYGON, 4326) NOT NULL,
   sent_at     TIMESTAMPTZ,
-  created_by  UUID REFERENCES businesses(id),
+  created_by  UUID,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -37,3 +37,5 @@ CREATE TABLE issues (
   resolved_at TIMESTAMPTZ,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+CREATE INDEX issues_location_idx ON issues USING GIST (location);
