@@ -20,7 +20,7 @@ export const alertsRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.post<{ Params: { id: string } }>("/:id/send", async (request, reply) => {
     const { id } = request.params;
-    const [alert] = await db`SELECT * FROM alerts WHERE id = ${id}`;
+    const [alert] = await db`SELECT id, title, body, sent_at, ST_AsGeoJSON(polygon) AS polygon FROM alerts WHERE id = ${id}`;
     if (!alert) return reply.notFound("Alert not found");
 
     const businesses = await db`

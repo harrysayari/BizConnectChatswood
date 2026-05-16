@@ -18,5 +18,8 @@ export const BusinessSchema = z.object({
 });
 
 export type Business = z.infer<typeof BusinessSchema>;
-export const UpdateBusinessSchema = BusinessSchema.partial().omit({ id: true });
+export const UpdateBusinessSchema = BusinessSchema
+  .partial()
+  .omit({ id: true, verified_at: true, last_heartbeat_at: true })
+  .refine((b) => Object.keys(b).length > 0, { message: "Body must contain at least one field" });
 export type UpdateBusiness = z.infer<typeof UpdateBusinessSchema>;

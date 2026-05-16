@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterAll } from "vitest";
 import { buildServer } from "../index.js";
 
 vi.mock("../db/client.js", () => ({
@@ -8,12 +8,13 @@ vi.mock("../db/client.js", () => ({
 import { db } from "../db/client.js";
 const mockDb = db as unknown as ReturnType<typeof vi.fn>;
 
+const server = buildServer();
+afterAll(async () => server.close());
 beforeEach(() => vi.clearAllMocks());
 
 describe("POST /alerts", () => {
   it("returns 201 with new alert id", async () => {
     mockDb.mockResolvedValueOnce([{ id: "alert-1" }]);
-    const server = buildServer();
     const res = await server.inject({
       method: "POST",
       url: "/alerts",
@@ -35,10 +36,9 @@ describe("POST /alerts", () => {
 describe("POST /alerts/:id/send", () => {
   it("returns 200 with matched business count", async () => {
     mockDb
-      .mockResolvedValueOnce([{ id: "alert-1", polygon: "{}", title: "Test", body: "Test", sent_at: null }])
+      .mockResolvedValueOnce([{ id: "alert-1", polygon: '{"type":"Polygon","coordinates":[]}', title: "Test", body: "Test", sent_at: null }])
       .mockResolvedValueOnce([{ id: "biz-1", phone: "+61400000000", name: "Shop" }])
       .mockResolvedValueOnce([]);
-    const server = buildServer();
     const res = await server.inject({ method: "POST", url: "/alerts/alert-1/send" });
     expect(res.statusCode).toBe(200);
     expect(JSON.parse(res.body)).toHaveProperty("matched");
@@ -48,7 +48,6 @@ describe("POST /alerts/:id/send", () => {
 describe("POST /issues", () => {
   it("returns 201 with new issue id", async () => {
     mockDb.mockResolvedValueOnce([{ id: "issue-1" }]);
-    const server = buildServer();
     const res = await server.inject({
       method: "POST",
       url: "/issues",
@@ -67,7 +66,6 @@ describe("POST /issues", () => {
 describe("PUT /issues/:id/status", () => {
   it("returns 200 on status update", async () => {
     mockDb.mockResolvedValueOnce([]);
-    const server = buildServer();
     const res = await server.inject({
       method: "PUT",
       url: "/issues/issue-1/status",

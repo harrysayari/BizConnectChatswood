@@ -27,7 +27,8 @@ export const businessesRoute: FastifyPluginAsync = async (fastify) => {
   fastify.put<{ Params: { id: string } }>("/:id", async (request, reply) => {
     const { id } = request.params;
     const body = UpdateBusinessSchema.parse(request.body);
-    await db`UPDATE businesses SET ${db(body as Record<string, unknown>)} WHERE id = ${id}`;
+    const result = await db`UPDATE businesses SET ${db(body as Record<string, unknown>)} WHERE id = ${id}`;
+    if (result.count === 0) return reply.notFound("Business not found");
     return { success: true };
   });
 };
