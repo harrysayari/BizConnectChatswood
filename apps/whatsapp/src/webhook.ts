@@ -16,11 +16,8 @@ export const webhookRoute: FastifyPluginAsync = async (fastify) => {
   });
 
   fastify.post("/webhook/whatsapp", async (request, reply) => {
-    const body = request.body as { object: string; entry: unknown[] };
-    if (body.object !== "whatsapp_business_account") return reply.code(400).send("Bad request");
-    for (const _entry of body.entry) {
-      // Message routing handled in future flow tasks
-    }
+    const body = request.body as { object?: string; entry?: unknown[] } | null;
+    if (!body || body.object !== "whatsapp_business_account") return reply.code(400).send("Bad request");
     return reply.code(200).send("OK");
   });
 };
