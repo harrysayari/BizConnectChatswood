@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 const GoogleMapEmbed = dynamic(() => import("./GoogleMapEmbed"), {
   ssr: false,
   loading: () => (
-    <div className="flex min-h-[220px] animate-pulse items-center justify-center rounded-lg bg-slate-100 text-sm text-slate-500 md:min-h-[320px]">
+    <div className="flex min-h-[220px] animate-pulse items-center justify-center rounded-xl bg-gradient-to-br from-slate-100 to-slate-200/80 text-sm font-medium text-slate-500 md:min-h-[320px]">
       Loading map…
     </div>
   ),
@@ -85,26 +85,28 @@ export function MapMockup({
       className="scroll-mt-28 md:scroll-mt-24"
       aria-labelledby="map-heading"
     >
-      <div className="mb-4">
+      <div className="mb-6">
         <h2
           id="map-heading"
-          className="text-lg font-semibold text-slate-900 md:text-xl"
+          className="text-xl font-bold tracking-tight text-slate-900 md:text-2xl"
         >
           {hasKey ? "Spatial view (Google Maps)" : "Spatial view (mockup)"}
         </h2>
-        <p className="text-sm text-slate-500">
+        <p className="mt-1 max-w-xl text-sm leading-relaxed text-slate-600">
           {hasKey
             ? "Live map centred on Chatswood — add polygon tooling next."
             : "Set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in .env.local to load Google Maps, or use this placeholder."}
         </p>
       </div>
 
-      <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-soft">
-        {hasKey ? (
-          <GoogleMapEmbed apiKey={googleMapsApiKey!.trim()} />
-        ) : (
-          <MockMapCanvas />
-        )}
+      <div className="relative overflow-hidden rounded-2xl border border-white/90 bg-gradient-to-br from-slate-200/90 via-white to-slate-100/90 p-[3px] shadow-elevate">
+        <div className="overflow-hidden rounded-[13px] bg-white">
+          {hasKey ? (
+            <GoogleMapEmbed apiKey={googleMapsApiKey!.trim()} />
+          ) : (
+            <MockMapCanvas />
+          )}
+        </div>
       </div>
     </section>
   );

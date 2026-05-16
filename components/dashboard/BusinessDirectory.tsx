@@ -10,7 +10,7 @@ function WebsiteLink({ uri }: { uri: string }) {
       href={uri}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-council-700 underline decoration-council-300 underline-offset-2 hover:text-council-800"
+      className="font-medium text-council-700 underline decoration-council-300/80 underline-offset-2 transition hover:text-teal-700"
     >
       <span className="break-all">{short}</span>
     </a>
@@ -24,32 +24,36 @@ export function BusinessDirectory({ rows }: { rows: BusinessPlaceRow[] }) {
       className="scroll-mt-28 md:scroll-mt-24"
       aria-labelledby="businesses-heading"
     >
-      <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2
             id="businesses-heading"
-            className="text-lg font-semibold text-slate-900 md:text-xl"
+            className="text-xl font-bold tracking-tight text-slate-900 md:text-2xl"
           >
             Chatswood business directory
           </h2>
-          <p className="text-sm text-slate-500">
-            Google Places–aligned fields: display name, phone, address, website.
+          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-600">
+            Google Places–aligned fields: display name, phone, address,
+            website.
           </p>
         </div>
-        <p className="text-xs text-slate-400">{rows.length} records (sample)</p>
+        <span className="inline-flex w-fit items-center rounded-full border border-slate-200/90 bg-white/80 px-3 py-1 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur-sm">
+          {rows.length} records · sample
+        </span>
       </div>
 
-      {/* Mobile + sm: cards */}
-      <ul className="flex flex-col gap-3 md:hidden">
+      <ul className="flex flex-col gap-4 md:hidden">
         {rows.map((b) => (
           <li
             key={b.id}
-            className="rounded-xl border border-slate-200 bg-white p-4 shadow-soft"
+            className="rounded-2xl border border-white/80 bg-white/90 p-5 shadow-elevate backdrop-blur-sm transition hover:border-council-200/60 hover:shadow-lg"
           >
-            <p className="font-semibold text-slate-900">{b.displayName}</p>
-            <dl className="mt-3 space-y-2 text-sm">
+            <p className="text-base font-semibold text-slate-900">
+              {b.displayName}
+            </p>
+            <dl className="mt-4 space-y-3 text-sm">
               <div className="flex flex-col gap-0.5">
-                <dt className="text-xs uppercase tracking-wide text-slate-400">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Phone
                 </dt>
                 <dd>
@@ -62,13 +66,15 @@ export function BusinessDirectory({ rows }: { rows: BusinessPlaceRow[] }) {
                 </dd>
               </div>
               <div className="flex flex-col gap-0.5">
-                <dt className="text-xs uppercase tracking-wide text-slate-400">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Address
                 </dt>
-                <dd className="text-slate-700">{b.formattedAddress}</dd>
+                <dd className="leading-relaxed text-slate-700">
+                  {b.formattedAddress}
+                </dd>
               </div>
               <div className="flex flex-col gap-0.5">
-                <dt className="text-xs uppercase tracking-wide text-slate-400">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Website
                 </dt>
                 <dd className="break-words">
@@ -80,36 +86,38 @@ export function BusinessDirectory({ rows }: { rows: BusinessPlaceRow[] }) {
         ))}
       </ul>
 
-      {/* md+: table */}
-      <div className="hidden overflow-hidden rounded-xl border border-slate-200 bg-white shadow-soft md:block">
+      <div className="hidden overflow-hidden rounded-2xl border border-white/80 bg-white/90 shadow-elevate backdrop-blur-sm md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] text-left text-sm">
-            <thead className="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <thead className="border-b border-slate-200/80 bg-slate-50/90 text-[10px] font-bold uppercase tracking-wider text-slate-500">
               <tr>
-                <th className="px-4 py-3">Business</th>
-                <th className="px-4 py-3">Phone</th>
-                <th className="px-4 py-3">Address</th>
-                <th className="px-4 py-3">Website</th>
+                <th className="px-5 py-4 font-semibold">Business</th>
+                <th className="px-5 py-4 font-semibold">Phone</th>
+                <th className="px-5 py-4 font-semibold">Address</th>
+                <th className="px-5 py-4 font-semibold">Website</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100/90">
               {rows.map((b) => (
-                <tr key={b.id} className="hover:bg-slate-50/80">
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                <tr
+                  key={b.id}
+                  className="transition-colors hover:bg-council-50/40"
+                >
+                  <td className="px-5 py-4 font-semibold text-slate-900">
                     {b.displayName}
                   </td>
-                  <td className="px-4 py-3 text-slate-700">
+                  <td className="px-5 py-4 text-slate-700">
                     <a
                       href={`tel:${b.nationalPhoneNumber.replace(/\s/g, "")}`}
-                      className="hover:text-council-700"
+                      className="font-medium hover:text-council-700"
                     >
                       {b.nationalPhoneNumber}
                     </a>
                   </td>
-                  <td className="max-w-xs px-4 py-3 text-slate-700">
+                  <td className="max-w-xs px-5 py-4 leading-relaxed text-slate-700">
                     {b.formattedAddress}
                   </td>
-                  <td className="max-w-[200px] px-4 py-3 text-slate-700">
+                  <td className="max-w-[200px] px-5 py-4 text-slate-700">
                     <WebsiteLink uri={b.websiteUri} />
                   </td>
                 </tr>

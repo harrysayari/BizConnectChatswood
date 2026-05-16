@@ -63,7 +63,7 @@ export default function GoogleMapEmbed({ apiKey }: { apiKey: string }) {
 
   if (loadError) {
     return (
-      <div className="flex min-h-[220px] flex-col items-center justify-center gap-2 rounded-lg bg-rose-50 p-6 text-center text-sm text-rose-900 md:min-h-[320px]">
+      <div className="flex min-h-[220px] flex-col items-center justify-center gap-2 rounded-[13px] bg-gradient-to-br from-rose-50 to-rose-100/80 p-6 text-center text-sm text-rose-900 md:min-h-[320px]">
         <p className="font-medium">Google Maps failed to load</p>
         <p className="max-w-md text-rose-800/90">{loadError}</p>
         <p className="max-w-md text-xs text-rose-700/90">
@@ -78,13 +78,13 @@ export default function GoogleMapEmbed({ apiKey }: { apiKey: string }) {
   return (
     <div className="relative aspect-[4/3] min-h-[220px] w-full sm:aspect-[16/9] sm:min-h-[280px] md:min-h-[320px]">
       {loading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-slate-100 text-sm font-medium text-slate-500">
+        <div className="absolute inset-0 z-10 flex items-center justify-center rounded-[13px] bg-gradient-to-br from-slate-100 to-slate-200/80 text-sm font-medium text-slate-500">
           Loading map…
         </div>
       )}
       <div
         ref={containerRef}
-        className="absolute inset-0 rounded-lg"
+        className="absolute inset-0 rounded-[13px]"
         role="presentation"
       />
     </div>

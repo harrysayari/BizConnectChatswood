@@ -17,55 +17,57 @@ const tabs: { id: Tab; label: string; hint: string }[] = [
 
 function severityStyles(sev: string) {
   if (sev === "critical")
-    return "bg-rose-100 text-rose-800 ring-1 ring-rose-200";
+    return "bg-rose-500/15 text-rose-900 ring-1 ring-rose-300/40";
   if (sev === "warning")
-    return "bg-amber-100 text-amber-900 ring-1 ring-amber-200";
-  return "bg-sky-100 text-sky-900 ring-1 ring-sky-200";
+    return "bg-amber-500/15 text-amber-950 ring-1 ring-amber-400/35";
+  return "bg-sky-500/12 text-sky-950 ring-1 ring-sky-400/35";
 }
 
 function ClosureCard({ c }: { c: RoadClosure }) {
   return (
-    <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <article className="rounded-xl border border-slate-100/90 bg-white/95 p-4 shadow-sm transition hover:border-slate-200 hover:shadow-md">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <h3 className="font-semibold text-slate-900">{c.title}</h3>
+        <h3 className="font-semibold leading-snug text-slate-900">{c.title}</h3>
         <span
-          className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${severityStyles(c.severity)}`}
+          className={`shrink-0 rounded-lg px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide ${severityStyles(c.severity)}`}
         >
           {c.severity}
         </span>
       </div>
-      <p className="mt-2 text-sm font-medium text-slate-800">{c.road}</p>
-      <p className="mt-1 text-xs text-slate-500">{c.window}</p>
-      <p className="mt-2 text-sm text-slate-600">{c.detail}</p>
+      <p className="mt-3 text-sm font-semibold text-slate-800">{c.road}</p>
+      <p className="mt-1 text-xs font-medium text-slate-500">{c.window}</p>
+      <p className="mt-3 text-sm leading-relaxed text-slate-600">{c.detail}</p>
     </article>
   );
 }
 
 function AccidentCard({ a }: { a: TrafficAccident }) {
   return (
-    <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <article className="rounded-xl border border-slate-100/90 bg-white/95 p-4 shadow-sm transition hover:border-slate-200 hover:shadow-md">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <h3 className="font-semibold text-slate-900">{a.location}</h3>
+        <h3 className="font-semibold leading-snug text-slate-900">
+          {a.location}
+        </h3>
         <span
-          className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${severityStyles(a.severity)}`}
+          className={`shrink-0 rounded-lg px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide ${severityStyles(a.severity)}`}
         >
           {a.severity}
         </span>
       </div>
-      <p className="mt-2 text-xs text-slate-500">{a.reportedAt}</p>
-      <p className="mt-1 text-sm font-medium text-slate-800">{a.lanes}</p>
-      <p className="mt-2 text-sm text-slate-600">{a.detail}</p>
+      <p className="mt-3 text-xs font-medium text-slate-500">{a.reportedAt}</p>
+      <p className="mt-1 text-sm font-semibold text-slate-800">{a.lanes}</p>
+      <p className="mt-3 text-sm leading-relaxed text-slate-600">{a.detail}</p>
     </article>
   );
 }
 
 function EventCard({ e }: { e: UpcomingEvent }) {
   return (
-    <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="font-semibold text-slate-900">{e.name}</h3>
-      <p className="mt-1 text-sm text-council-800">{e.date}</p>
+    <article className="rounded-xl border border-slate-100/90 bg-white/95 p-4 shadow-sm transition hover:border-council-200/60 hover:shadow-md">
+      <h3 className="font-semibold leading-snug text-slate-900">{e.name}</h3>
+      <p className="mt-2 text-sm font-semibold text-council-800">{e.date}</p>
       <p className="mt-1 text-sm font-medium text-slate-800">{e.area}</p>
-      <p className="mt-2 text-sm text-slate-600">{e.detail}</p>
+      <p className="mt-3 text-sm leading-relaxed text-slate-600">{e.detail}</p>
     </article>
   );
 }
@@ -83,21 +85,20 @@ export function LiveTrafficPanel(props: {
       className="scroll-mt-28 md:scroll-mt-24"
       aria-labelledby="alerts-heading"
     >
-      <div className="mb-4">
+      <div className="mb-6">
         <h2
           id="alerts-heading"
-          className="text-lg font-semibold text-slate-900 md:text-xl"
+          className="text-xl font-bold tracking-tight text-slate-900 md:text-2xl"
         >
           Live traffic &amp; precinct feed
         </h2>
-        <p className="text-sm text-slate-500">
+        <p className="mt-1 max-w-xl text-sm leading-relaxed text-slate-600">
           Structured for TfNSW Live Traffic / event APIs — mock data for now.
         </p>
       </div>
 
-      {/* Tabs: horizontal scroll on narrow screens */}
       <div
-        className="mb-3 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible"
+        className="mb-4 flex min-w-0 gap-1 overflow-x-auto rounded-2xl border border-slate-200/80 bg-slate-100/80 p-1.5 shadow-inner backdrop-blur-sm [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:overflow-visible [&::-webkit-scrollbar]:hidden"
         role="tablist"
         aria-label="Alert categories"
       >
@@ -110,15 +111,17 @@ export function LiveTrafficPanel(props: {
               role="tab"
               aria-selected={selected}
               onClick={() => setTab(t.id)}
-              className={`shrink-0 rounded-full px-4 py-2 text-left text-sm font-medium transition ${
+              className={`min-w-0 flex-1 shrink-0 rounded-xl px-3 py-2.5 text-left transition sm:min-w-[unset] sm:flex-none sm:px-4 ${
                 selected
-                  ? "bg-council-700 text-white shadow-sm"
-                  : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                  ? "bg-white text-slate-900 shadow-md shadow-slate-900/10 ring-1 ring-slate-200/80"
+                  : "text-slate-600 hover:bg-white/50 hover:text-slate-900"
               }`}
             >
-              <span className="block">{t.label}</span>
+              <span className="block text-xs font-bold sm:text-sm">
+                {t.label}
+              </span>
               <span
-                className={`block text-xs font-normal ${selected ? "text-council-100" : "text-slate-500"}`}
+                className={`mt-0.5 block text-[10px] font-medium sm:text-xs ${selected ? "text-slate-500" : "text-slate-400"}`}
               >
                 {t.hint}
               </span>
@@ -128,7 +131,7 @@ export function LiveTrafficPanel(props: {
       </div>
 
       <div
-        className="rounded-xl border border-slate-200 bg-slate-50/80 p-3 sm:p-4"
+        className="rounded-2xl border border-white/80 bg-gradient-to-b from-white/80 to-slate-50/90 p-4 shadow-soft backdrop-blur-sm sm:p-5"
         role="tabpanel"
       >
         {tab === "closures" && (

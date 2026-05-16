@@ -13,7 +13,7 @@ import { mockBusinesses } from "@/lib/mockBusinesses";
 export function DashboardHome() {
   return (
     <DashboardShell>
-      <div className="mx-auto flex max-w-7xl flex-col gap-10 lg:gap-12">
+      <div className="mx-auto flex max-w-7xl flex-col gap-12 lg:gap-14">
         <OverviewSummary />
 
         {/* Desktop: map + alerts side by side below overview */}
