@@ -23,14 +23,14 @@ export const alertsRoute: FastifyPluginAsync = async (fastify) => {
     const [alert] = await db`SELECT id, title, body, sent_at, ST_AsGeoJSON(polygon) AS polygon FROM alerts WHERE id = ${id}`;
     if (!alert) return reply.notFound("Alert not found");
 
-    const businesses = await db`
+    const businesses = await db<{ id: string; phone: string; name: string }[]>`
       SELECT id, phone, name FROM businesses
-      WHERE ST_Within(location::geometry, ST_GeomFromGeoJSON(${alert.polygon})::geometry)
+      WHERE ST_Within(location::geometry, ST_SetSRID(ST_GeomFromGeoJSON(${alert.polygon}), 4326)::geometry)
     `;
 
     await db`UPDATE alerts SET sent_at = NOW() WHERE id = ${id}`;
 
     // WhatsApp sends are triggered here — actual Meta API calls handled by apps/whatsapp
-    return { matched: businesses.length, businessIds: businesses.map((b: { id: string }) => b.id) };
+    return { matched: businesses.length, businessIds: businesses.map((b) => b.id) };
   });
 };
